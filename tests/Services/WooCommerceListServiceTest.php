@@ -35,12 +35,11 @@ class WooCommerceListServiceTest extends TestCase {
 		$expected = 'United States (US), New York';
 		$this->assertEquals( $expected, $countries[$key]['name']);
 
-		// Format: state
+ 		// Format: state
 		$countries = ListFactory::get('countries','woocommerce', 'state', ARRAY_A);
-		$key = 1891;
 		print_r( $countries);
-		$this->assertArrayHasKey($expected, $countries);
-		$expected = 'Alabama';
+		$this->assertArrayHasKey($key, $countries);
+		$expected = 'New York';
 		$this->assertEquals( $expected, $countries[$key]['name']);
 		
 		$this->assertIsArray($countries);
