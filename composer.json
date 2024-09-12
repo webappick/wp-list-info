@@ -1,0 +1,27 @@
+{
+    "name": "webappick/wp-list-info",
+    "description": "Everything you need about wordpress info",
+    "type": "library",
+    "require-dev": {
+        "woocommerce/woocommerce": "5.8",
+        "phpunit/phpunit": "^9.0",
+        "mockery/mockery": "^1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "WebAppick\\WPListInfo\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "webappick",
+            "email": "webappick@gmail.com"
+        }
+    ],
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "automattic/jetpack-autoloader": true
+        }
+    }
+}
