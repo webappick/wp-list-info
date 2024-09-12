@@ -1,2 +1,7 @@
 vendor
 wp-content
+
+
+.idea
+.phpunit.result.cache
+phpunit.xml.bak
