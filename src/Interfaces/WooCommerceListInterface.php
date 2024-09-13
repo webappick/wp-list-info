@@ -9,12 +9,25 @@ namespace WebAppick\WPListInfo\Interfaces;
  * @subpackage WebAppick\WPListInfo\Interfaces
  */
 interface WooCommerceListInterface {
-	// Country and region-related lists
+	/**
+	 * Get a list of countries
+	 * @return array
+	 */
 	public function getCountries();
-	public function getStates($country);
+	/**
+	 * Get a list of states
+	 * @param string $countryCode Country code (e.g., 'US')
+	 * @return array
+	 */
+	public function getStates($countryCode=null);
 	
-	// Product-related lists
-	public function getProducts();
+	/**
+	 * Get a list of products
+	 * @param array $args Query arguments
+	 *
+	 * @return mixed
+	 */
+	public function getProducts($args);
 	public function getProductCategories();
 	public function getProductTags();
 	public function getProductAttributes();
@@ -27,11 +40,11 @@ interface WooCommerceListInterface {
 	public function getOrderStatuses();
 	
 	// Customer-related lists
-	public function getCustomers();
+	public function getCustomers($args=[]);
 	public function getCustomerMeta($customerId);
 	
 	// Coupon-related lists
-	public function getCoupons();
+	public function getCoupons($args);
 	
 	// Shipping-related lists
 	public function getShippingMethods();
@@ -46,6 +59,6 @@ interface WooCommerceListInterface {
 	public function getTaxClasses();
 	
 	// Reports-related lists
-	public function getSalesReports();
-	public function getTopSellers();
+	public function getTopProducts($count);
+	public function getTopCustomers($count);
 }
