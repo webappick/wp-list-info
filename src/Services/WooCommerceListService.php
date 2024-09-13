@@ -6,6 +6,7 @@ namespace WebAppick\WPListInfo\Services;
 use WC_Shipping_Zones;
 use WC_Tax;
 use WebAppick\WPListInfo\Interfaces\WooCommerceListInterface;
+use WP_Query;
 use WP_User_Query;
 
 /**
@@ -19,19 +20,7 @@ use WP_User_Query;
  * @category Library
  * */
 class WooCommerceListService implements WooCommerceListInterface {
-	/**
-	 * @var array $countries List of WooCommerce countries
-	 */
-	protected $countries;
-	/**
-	 * @var array $states List of WooCommerce states
-	 */
-	protected $states;
-	
-	public function __construct() {
-	
-	}
-	
+
 	/**
 	 * @inerhitDoc
 	 */
@@ -39,6 +28,9 @@ class WooCommerceListService implements WooCommerceListInterface {
 		return WC()->countries->get_countries();
 	}
 	
+	/**
+	 * @inheritDoc
+	 */
 	public function getStates($countryCode=null) {
 		if($countryCode) {
 			return WC()->countries->get_states($countryCode);
@@ -46,17 +38,35 @@ class WooCommerceListService implements WooCommerceListInterface {
 		return WC()->countries->get_states();
 	}
 	
+	/**
+	 * @inheritDoc
+	 */
 	public function getProducts($args) {
-		// Set the default arguments
-		$defaultArgs = ['limit' => -1];
+		// Set default arguments if none are provided
+		$defaults = [
+			'limit' => -1,           // Limit the number of products returned
+			'orderby' => 'date',     // Default ordering by date
+			'order' => 'DESC',       // Order results descending by default
+			'status' => 'publish',   // Fetch only variable products (products with variations)
+		];
 		
-		// Merge the default arguments with the provided arguments
-		$args = wp_parse_args($args, $defaultArgs);
+		// Merge the provided arguments with the defaults
+		$queryArgs = wp_parse_args($args, $defaults);
 		
-		// Get the products
-		return wc_get_products($args);
+		// Use WooCommerce wc_get_products() to fetch products
+		$products = wc_get_products($queryArgs);
+		
+		// Return the products or an empty array if none found
+		return !empty($products) ? $products : [];
 	}
 	
+	public function getProductVisibilities(  ) {
+		return wc_get_product_visibility_options();
+	}
+	
+	/**
+	 * @inheritDoc
+	 */
 	public function getProductCategories() {
 		// Get the product categories
 		return get_terms([
@@ -65,6 +75,9 @@ class WooCommerceListService implements WooCommerceListInterface {
 		]);
 	}
 	
+	/**
+	 * @inheritDoc
+	 */
 	public function getProductTags() {
 		// Get the product tags
 		return get_terms([
@@ -73,128 +86,178 @@ class WooCommerceListService implements WooCommerceListInterface {
 		]);
 	}
 	
+	/**
+	 * @inheritDoc
+	 */
 	public function getProductAttributes() {
 		// Get the product attributes
 		return wc_get_attribute_taxonomies();
 	}
 	
-	public function getProductVariations( $productId ) {
-		// Get the product variations
-		return wc_get_product_variations($productId);
+	public function getProductAttributeOptions( $taxonomy ) {
+		// Get the product attribute options
+		return get_terms([
+			'taxonomy' => $taxonomy,
+			'hide_empty' => false,
+		]);
+		
 	}
 	
+	/**
+	 * @inheritDoc
+	 */
 	public function getProductTypes() {
 		// Get the product types
 		return wc_get_product_types();
 	}
 	
+	/**
+	 * @inheritDoc
+	 */
 	public function getStockStatuses() {
 		// Get the stock statuses
 		return wc_get_product_stock_status_options();
 	}
 	
-	public function getOrders() {
-		// TODO: Implement getOrders() method.
+	/**
+	 * @inheritDoc
+	 */
+	public function getOrders($args = []) {
+		// Set default arguments if none are provided
+		$defaults = [
+			'limit' => 10,           // Limit the number of orders returned
+			'orderby' => 'date',     // Default ordering by date
+			'order' => 'DESC',       // Order results descending by default
+			'status' => 'any',       // Retrieve all order statuses
+		];
+		
+		// Merge the provided arguments with the defaults
+		$queryArgs = wp_parse_args($args, $defaults);
+		
+		// Use WooCommerce wc_get_orders() to fetch orders
+		$orders = wc_get_orders($queryArgs);
+		
+		// Return the orders or an empty array if none found
+		return !empty($orders) ? $orders : [];
 	}
 	
+	/**
+	 * @inheritDoc
+	 */
 	public function getOrderStatuses() {
 		// GET the order statuses
 		return wc_get_order_statuses();
 	}
 	
-	public function getCustomers($args=[]) {
-		// Get the customers
-		$defaultArgs = array(
-			'role'    => 'customer',
-			'order'   => 'ASC',
-			'orderby' => 'display_name',
-			'number'  => 20,
-		);
-		
-		$args = wp_parse_args($args, $defaultArgs);
-		
-		
-		return ( new \WP_User_Query( ) )->get_results();
-	}
-	
-	public function getCustomerMeta( $customerId ) {
-		// Get the customer meta
-		return get_user_meta($customerId);
-	}
-	
-	public function getCoupons($args) {
-		// Set the default arguments
-		$defaultArgs = [
-			'post_type' => 'shop_coupon',
+	/**
+	 * @inheritDoc
+	 */
+	public function getCustomers($args = []) {
+		// Set default arguments if none are provided
+		$defaults = [
+			'role' => 'customer', // Only fetch users with the 'customer' role
+			'number' => -1,       // Limit the number of customers returned
+			'orderby' => 'ID',    // Default ordering by ID
+			'order' => 'ASC',     // Order results ascending
 		];
 		
-		// Merge the default arguments with the provided arguments
-		$args = wp_parse_args($args, $defaultArgs);
+		// Merge the provided arguments with the defaults
+		$queryArgs = wp_parse_args($args, $defaults);
 		
-		// Get the coupons using the provided arguments and with get posts method
-		return get_posts($args);
+		// Run the WP_User_Query to fetch customers
+		$userQuery = new WP_User_Query($queryArgs);
 		
+		// Get the results (list of customer objects)
+		$customers = $userQuery->get_results();
+		
+		// Return the customers or an empty array if none found
+		return !empty($customers) ? $customers : [];
 	}
 	
+	/**
+	 * @inheritDoc
+	 */
+	public function getCoupons($args = []) {
+		// Set default arguments if none are provided
+		$defaults = [
+			'post_type' => 'shop_coupon',     // Query the 'shop_coupon' post-type
+			'posts_per_page' => -1,           // Limit the number of coupons returned
+			'orderby' => 'title',             // Default ordering by title
+			'order' => 'ASC',                 // Order results ascending
+		];
+		
+		// Merge the provided arguments with the defaults
+		$queryArgs = wp_parse_args($args, $defaults);
+		
+		// Run the WP_Query to fetch coupons
+		$couponQuery = new WP_Query($queryArgs);
+		
+		// Get the results (list of coupon posts)
+		$coupons = $couponQuery->get_posts();
+		
+		// Return the coupons or an empty array if none found
+		return !empty($coupons) ? $coupons : [];
+	}
+	
+	/**
+	 * @inheritDoc
+	 */
+	public function getShippingClasses(  ) {
+		$shipping_methods = WC()->shipping->get_shipping_methods();
+		$options = [];
+		foreach ($shipping_methods as $method) {
+			$options[$method->id] = $method->get_method_title();
+		}
+		return $options;
+	}
+	
+	/**
+	 * @inheritDoc
+	 */
 	public function getShippingMethods() {
 		// Get the shipping methods
 		return WC()->shipping->get_shipping_methods();
 	}
 	
+	/**
+	 * @inheritDoc
+	 */
 	public function getShippingZones() {
 		// Get the shipping zones
 		return WC_Shipping_Zones::get_zones();
 	}
 	
+	/**
+	 * @inheritDoc
+	 */
 	public function getShippingZoneMethods( $zoneId ) {
 		// Get the shipping zone methods
 		return WC_Shipping_Zones::get_zone($zoneId);
 	}
 	
+	/**
+	 * @inheritDoc
+	 */
 	public function getPaymentGateways() {
 		// Get the payment gateways
 		return WC()->payment_gateways->payment_gateways();
 	}
 	
+	/**
+	 * @inheritDoc
+	 */
 	public function getTaxRates() {
 		// Get the tax rates
 		return WC_Tax::get_rates();
 	}
 	
+	/**
+	 * @inheritDoc
+	 */
 	public function getTaxClasses() {
 		// Get the tax classes
 		return WC_Tax::get_tax_classes();
 	}
 	
-	public function getTopProducts($count) {
-		// Query & Get the sold products by the provided count
-		// Need to query order items and group by product ID
-		// Then sort by the sum of the order items
-		// Then get the top products by the provided count
-		
-		global $wpdb;
-		
-		$query = "
-			SELECT order_items.order_item_id as product_id, SUM(order_items.order_item_quantity) as product_quantity
-			FROM {$wpdb->prefix}woocommerce_order_items as order_items
-			LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta ON order_items.order_item_id = order_item_meta.order_item_id
-			LEFT JOIN {$wpdb->prefix}posts as orders ON order_items.order_id = orders.ID
-			WHERE orders.post_status IN ('wc-completed', 'wc-processing')
-			AND order_items.order_item_type = 'line_item'
-			GROUP BY order_items.order_item_id
-			ORDER BY product_quantity DESC
-			LIMIT $count";
-		
-		return $wpdb->get_results($query);
-	}
 	
-	public function getTopCustomers($count) {
-		// Query & Get the top customers by the provided count
-		return get_users([
-			'role' => 'customer',
-			'orderby' => 'post_count',
-			'order' => 'DESC',
-			'number' => $count,
-		]);
-	}
 }

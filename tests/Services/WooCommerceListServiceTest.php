@@ -120,13 +120,14 @@ class WooCommerceListServiceTest extends TestCase {
 		$this->assertContainsOnly('string', $statuses);
 	}
 	
-//	public function testGetOrders() {
-//		// Instantiate the WooCommerceListService and test the method
-//		$service = new WooCommerceListService();
-//		$orders = $service->getOrders();
-//		$this->assertIsArray($orders, 'Orders is not an array. Check if the method returns an array.');
-//		$this->assertEmpty($orders, 'Orders are not empty. Check if there are any orders in the WooCommerce store.');
-//	}
+	public function testGetOrders() {
+		// Instantiate the WooCommerceListService and test the method
+		$service = new WooCommerceListService();
+		$orders = $service->getOrders();
+
+		$this->assertIsArray($orders, 'Orders is not an array. Check if the method returns an array.');
+		$this->assertNotEmpty($orders, 'Orders are not empty. Check if there are any orders in the WooCommerce store.');
+	}
 	
 	public function testGetOrderStatuses() {
 		// Instantiate the WooCommerceListService and test the method
@@ -137,22 +138,28 @@ class WooCommerceListServiceTest extends TestCase {
 		$this->assertContainsOnly('string', $statuses);
 	}
 	
-//	public function testGetCustomers() {
-//		// Instantiate the WooCommerceListService and test the method
-//		$service = new WooCommerceListService();
-//		$customers = $service->getCustomers();
-//		print_r( $customers);
-//		$this->assertIsArray($customers, 'Customers is not an array. Check if the method returns an array.');
-//		$this->assertEmpty($customers, 'Customers are not empty. Check if there are any customers in the WooCommerce store.');
-//	}
+	public function testGetCustomers() {
+		// Instantiate the WooCommerceListService and test the method
+		$service = new WooCommerceListService();
+		$customers = $service->getCustomers();
+		
+		$this->assertIsArray($customers, 'Customers is not an array. Check if the method returns an array.');
+		$this->assertNotEmpty($customers, 'Customers are not empty. Check if there are any customers in the WooCommerce store.');
+		$key = array_key_first($customers);
+		$this->assertInstanceOf('WP_User', $customers[$key]);
+		$this->assertContainsOnlyInstancesOf('WP_User', $customers);
+	}
 
-//	public function testGetCoupons() {
-//		// Instantiate the WooCommerceListService and test the method
-//		$service = new WooCommerceListService();
-//		$coupons = $service->getCoupons([]);
-//		$this->assertIsArray($coupons, 'Coupons is not an array. Check if the method returns an array.');
-//		$this->assertEmpty($coupons, 'Coupons are not empty. Check if there are any coupons in the WooCommerce store.');
-//	}
+	public function testGetCoupons() {
+		// Instantiate the WooCommerceListService and test the method
+		$service = new WooCommerceListService();
+		$coupons = $service->getCoupons([]);
+		
+		$this->assertIsArray($coupons, 'Coupons is not an array. Check if the method returns an array.');
+		$this->assertNotEmpty($coupons, 'Coupons are not empty. Check if there are any coupons in the WooCommerce store.');
+		$key = array_key_first($coupons);
+		$this->assertInstanceOf('WP_Post', $coupons[$key]);
+	}
 	
 	public function testGetShippingMethods() {
 		// Instantiate the WooCommerceListService and test the method
@@ -178,7 +185,6 @@ class WooCommerceListServiceTest extends TestCase {
 		$service = new WooCommerceListService();
 		$zoneId = 1;
 		$methods = $service->getShippingZoneMethods($zoneId);
-		print_r( $methods);
 		$this->assertInstanceOf('WC_Shipping_Zone', $methods);
 		
 	}
