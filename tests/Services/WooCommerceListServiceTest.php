@@ -196,4 +196,41 @@ class WooCommerceListServiceTest extends TestCase {
 		$this->assertIsArray( $gateways, 'Payment gateways is not an array. Check if the method returns an array.' );
 		$this->assertNotEmpty( $gateways, 'Payment gateways are empty. Check if there are any payment gateways in the WooCommerce store.' );
 	}
+	
+	public function testGetTaxRates() {
+		// Instantiate the WooCommerceListService and test the method
+		$service = new WooCommerceListService();
+		$rates = $service->getTaxRates();
+		
+		$this->assertIsArray($rates, 'Tax rates is not an array. Check if the method returns an array.');
+		$this->assertNotEmpty($rates, 'Tax rates are empty. Check if there are any tax rates in the WooCommerce store.');
+	}
+	
+	public function testGetTaxClasses() {
+		// Instantiate the WooCommerceListService and test the method
+		$service = new WooCommerceListService();
+		$classes = $service->getTaxClasses();
+		
+		$this->assertIsArray($classes, 'Tax classes is not an array. Check if the method returns an array.');
+		$this->assertNotEmpty($classes, 'Tax classes are empty. Check if there are any tax classes in the WooCommerce store.');
+	}
+	
+	public function testGetShippingClasses() {
+		// Instantiate the WooCommerceListService and test the method
+		$service = new WooCommerceListService();
+		$classes = $service->getShippingClasses();
+		
+		$this->assertIsArray($classes, 'Shipping classes is not an array. Check if the method returns an array.');
+		$this->assertNotEmpty($classes, 'Shipping classes are empty. Check if there are any shipping classes in the WooCommerce store.');
+	}
+	
+	public function testGetProductVisibilities() {
+		// Instantiate the WooCommerceListService and test the method
+		$service = new WooCommerceListService();
+		$visibilities = $service->getProductVisibilities();
+		
+		$this->assertIsArray($visibilities, 'Product visibilities is not an array. Check if the method returns an array.');
+		$this->assertNotEmpty($visibilities, 'Product visibilities are empty. Check if there are any product visibilities in the WooCommerce store.');
+		$this->assertContainsOnly('string', $visibilities);
+	}
 }
