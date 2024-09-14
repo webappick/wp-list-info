@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<ruleset name="WebAppick WPListInfo Coding Standard">
+    <!-- Use the Codeat Coding Standard -->
+    <rule ref="CodeatCodingStandard"/>
+
+    <!-- Scan the src directory -->
+    <file>src</file>
+
+    <!-- Ignore vendor directory -->
+    <exclude-pattern>vendor/*</exclude-pattern>
+
+    <!-- Optionally adjust severity and report -->
+    <arg name="severity" value="5"/>
+    <arg name="report" value="full"/>
+
+    <!-- Exclude specific checks for variable and function names -->
+    <exclude name="Squiz.NamingConventions.ValidVariableName.NotSnakeCase"/>
+    <exclude name="Squiz.NamingConventions.ValidFunctionName.NotSnakeCase"/>
+    <exclude name="PSR1.Methods.CamelCapsMethodName.NotCamelCaps"/>
+</ruleset>

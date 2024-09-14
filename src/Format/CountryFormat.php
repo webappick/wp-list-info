@@ -2,28 +2,28 @@
 
 namespace WebAppick\WPListInfo\Formatters;
 
-
 use WebAppick\WPListInfo\Abstracts\FormattingAbstract;
 
 /**
- * Class CountryFormatter
+ * Class CountryFormat
  *
  * @package WPListInfo
- * @subpackage WebAppick\WPListInfo\Formatters
+ * @subpackage WebAppick\WPListInfo\Format
  * @author   Ohidul Islam <wahid0003@gmail.com>
  * @link     https://webappick.com
  * @license  https://opensource.org/licenses/gpl-license.php GNU Public License
  * @category Library
  */
-class CountryFormatter extends FormattingAbstract {
+class CountryFormat extends FormattingAbstract {
 	
 	/**
 	 * Format the list of countries and states based on the provided format.
-	 * @param array $data List of countries with their states or states of a country
-	 *                    Example: [
-	 *                       ['id' => 'US', 'name' => 'United States', 'states' => ['AL' => 'Alabama', 'NY' => 'New York']],
-	 *                       ['id' => 'CA', 'name' => 'Canada', 'states' => ['AB' => 'Alberta', 'BC' => 'British Columbia']]
-	 *                    ]
+     *
+	 * @param array  $data List of countries with their states or states of a country
+	 *                     Example: [
+	 *                        ['id' => 'US', 'name' => 'United States', 'states' => ['AL' => 'Alabama', 'NY' => 'New York']],
+	 *                        ['id' => 'CA', 'name' => 'Canada', 'states' => ['AB' => 'Alberta', 'BC' => 'British Columbia']]
+	 *                     ]
 	 *
 	 * @param string $format Output format. Default is 'country'
 	 *                       Example formats:
@@ -41,36 +41,37 @@ class CountryFormatter extends FormattingAbstract {
 	 *               [ ['id' => 'US', 'name' => 'United States'] ] if no states are present or state not exist in format
 	 *               [ ['id' => 'US:NY', 'name' => 'New York, United States'] ] if state is present in format
 	 */
-	public function format($data, $format='country', $output = OBJECT) {
+	public function format( $data, $format = 'country', $output = OBJECT ) {
 		$formattedList = [];
 		
 		// If there is no data, return an empty list
-		if (empty($data)) {
+		if ( empty( $data ) ) {
 			return $formattedList;
 		}
 		
 		// Loop through the list of countries and their states
-		foreach ($data as $country) {
+		foreach ( $data as $country ) {
 			$countryCode = $country['id'];           // Country code (e.g., 'US')
 			$countryName = $country['name'];         // Country name (e.g., 'United States')
-			$states = isset( $country['states'] ) ? $country['states'] : [];      // States array (e.g., ['AL' => 'Alabama'])
+			$states      = $country['states'] ?? [];      // States array (e.g., ['AL' => 'Alabama'])
 		
 			// If there are no states, format the country only
-			if (strpos($format, 'state') === false) {
+			if ( strpos( $format, 'state' ) === false ) {
 				$formattedList[] = [
-					'id' => $countryCode,
-					'name' => $this->applyFormat($format, $countryCode, $countryName, null, null)
+					'id'   => $countryCode,
+					'name' => $this->applyFormat( $format, $countryCode, $countryName, null, null ),
 				];
 			} else {
 				// Skip countries with no states if the format includes states
-				if(empty($states)){
+				if ( empty( $states ) ) {
 					continue;
 				}
+
 				// Format each state in the country
-				foreach ($states as $stateCode => $stateName) {
+				foreach ( $states as $stateCode => $stateName ) {
 					$formattedList[] = [
-						'id' => $this->applyFormat('code_country:code_state', $countryCode, $countryName, $stateCode, $stateName),
-						'name' => $this->applyFormat($format, $countryCode, $countryName, $stateCode, $stateName)
+						'id'   => $this->applyFormat( 'code_country:code_state', $countryCode, $countryName, $stateCode, $stateName ),
+						'name' => $this->applyFormat( $format, $countryCode, $countryName, $stateCode, $stateName ),
 					];
 				}
 			}
@@ -82,29 +83,33 @@ class CountryFormatter extends FormattingAbstract {
 	/**
 	 * Apply the given format to the provided country and state data.
 	 *
-	 * @param string $format       The format string (e.g., 'code_country:code_state state - country').
-	 * @param string $countryCode  The country code (e.g., 'US').
-	 * @param string $countryName  The country name (e.g., 'United States').
+	 * @param string      $format       The format string (e.g., 'code_country:code_state state - country').
+	 * @param string      $countryCode  The country code (e.g., 'US').
+	 * @param string      $countryName  The country name (e.g., 'United States').
 	 * @param string|null $stateCode The state code (e.g., 'AL') or null if no state.
 	 * @param string|null $stateName The state name (e.g., 'Alabama') or null if no state.
-	 *
-	 * @return string The formatted string based on the provided format.
+     * @return string The formatted string based on the provided format.
 	 */
-	protected function applyFormat($format, $countryCode, $countryName, $stateCode, $stateName) {
+	protected function applyFormat( $format, $countryCode, $countryName, $stateCode, $stateName ) {
 		// Replace variables in the format string with actual values
 		$formatted = $format;
-		$formatted = str_replace( array( 'code_country', 'country', 'code_state', 'state' ), array(
-			$countryCode,
-			$countryName,
-			isset( $stateCode ) ? $stateCode : '',
-			isset( $stateName ) ? $stateName : ''
-		), $formatted );
+		$formatted = str_replace(
+            array( 'code_country', 'country', 'code_state', 'state' ),
+            [
+				$countryCode,
+				$countryName,
+				$stateCode ?? '',
+				$stateName ?? '',
+			],
+            $formatted
+            );
 		
 		// Clean up any leftover formatting (e.g., if state-related placeholders are used but no state is present)
-		$formatted = trim(preg_replace('/\s*,\s*/', ', ', $formatted)); // Clean up extra commas
-		$formatted = preg_replace('/\s+/', ' ', $formatted); // Remove extra spaces
+		$formatted = trim( preg_replace( '/\s*,\s*/', ', ', $formatted ) ); // Clean up extra commas
+		$formatted = preg_replace( '/\s+/', ' ', $formatted ); // Remove extra spaces
 		// Remove trailing commas
 		// Return the formatted string exactly as specified in the format string
-		return rtrim($formatted, ',');
+		return rtrim( $formatted, ',' );
 	}
+
 }

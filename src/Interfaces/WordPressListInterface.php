@@ -1,17 +1,18 @@
 <?php
+
 namespace WebAppick\WPListInfo\Interfaces;
 
-use WP_Query;
-
 /**
-* Class WordPressListInterface
-*
-* @package WebAppick\WPListInfo\Interfaces
-* @subpackage WebAppick\WPListInfo\Interfaces
-*/
+ * Class WordPressListInterface
+ *
+ * @package WebAppick\WPListInfo\Interfaces
+ * @subpackage WebAppick\WPListInfo\Interfaces
+ */
 interface WordPressListInterface {
+
 // Taxonomy-related lists
-public function getCategories();
+	public function getCategories();
+
 /**
  * Retrieve a list of WordPress tags.
  *
@@ -19,7 +20,8 @@ public function getCategories();
  *
  * @return array List of WP_Term objects representing the tags. Returns an empty array if no tags are found or if an error occurs.
  */
-public function getTags();
+	public function getTags();
+
 	/**
 	 * Retrieve a list of registered taxonomies in WordPress.
 	 *
@@ -27,7 +29,8 @@ public function getTags();
 	 *
 	 * @return array List of taxonomy names (strings). Returns an empty array if no taxonomies are found.
 	 */
-public function getTaxonomies();
+	public function getTaxonomies();
+
 	/**
 	 * Retrieve terms for a specific taxonomy.
 	 *
@@ -35,10 +38,9 @@ public function getTaxonomies();
 	 *
 	 * @param string $taxonomy The taxonomy for which to retrieve terms.
 	 *                         Example: 'category', 'post_tag', or any custom taxonomy.
-	 *
-	 * @return array List of WP_Term objects representing the terms. Returns an empty array if no terms are found or an error occurs.
+     * @return array List of WP_Term objects representing the terms. Returns an empty array if no terms are found or an error occurs.
 	 */
-public function getTerms($taxonomy);
+	public function getTerms( $taxonomy );
 
 // User-related lists
 	/**
@@ -53,10 +55,10 @@ public function getTerms($taxonomy);
 	 *                        'orderby' => 'login', // Order by login name
 	 *                        'order' => 'ASC', // Order direction
 	 *                    ]
-	 *
-	 * @return array List of WP_User objects representing the users. Returns an empty array if no users are found or if an error occurs.
+     * @return array List of WP_User objects representing the users. Returns an empty array if no users are found or if an error occurs.
 	 */
-public function getUsers($args);
+	public function getUsers( $args );
+
 	/**
 	 * Retrieve a list of all user roles in WordPress.
 	 *
@@ -65,7 +67,8 @@ public function getUsers($args);
 	 * @return array List of user roles where the key is the role slug and the value is an array containing the role's name and capabilities.
 	 *               Returns an empty array if no roles are found.
 	 */
-public function getRoles();
+	public function getRoles();
+
 	/**
 	 * Retrieve all capabilities from all registered roles in WordPress.
 	 *
@@ -73,7 +76,7 @@ public function getRoles();
 	 *
 	 * @return array List of all unique capabilities across all roles.
 	 */
-public function getCapabilities();
+	public function getCapabilities();
 
 // Post-related lists
 	/**
@@ -87,11 +90,11 @@ public function getCapabilities();
 	 *                        'posts_per_page' => 10,      // Limit the number of posts
 	 *                        'orderby'     => 'date',     // Order by field
 	 *                        'order'       => 'DESC',     // Order direction
-	 *                    ]
-	 *
-	 * @return array List of WP_Post objects representing the posts. Returns an empty array if no posts are found.
+	 *                    ].
+     * @return array List of WP_Post objects representing the posts. Returns an empty array if no posts are found.
 	 */
-public function getPosts($args);
+	public function getPosts( $args );
+
 	/**
 	 * Retrieve all registered post statuses in WordPress.
 	 *
@@ -99,13 +102,16 @@ public function getPosts($args);
 	 *
 	 * @return array List of post statuses where the key is the status slug and the value is the label.
 	 */
-public function getPostStatuses();
-public function getPostTypes();
-public function getPostFormats();
-public function getPostMetas();
+	public function getPostStatuses();
+
+	public function getPostTypes();
+
+	public function getPostFormats();
+
+	public function getPostMetas();
 
 // Media-related lists
-public function getMedia();
+	public function getMedia();
 
 // Page-related lists
 	/**
@@ -119,21 +125,22 @@ public function getMedia();
 	 *                        'orderby' => 'title',      // Order pages by title
 	 *                        'order' => 'ASC',          // Sort in ascending order
 	 *                    ]
-	 *
-	 * @return array List of WP_Post objects representing the pages. Returns an empty array if no pages are found.
+     * @return array List of WP_Post objects representing the pages. Returns an empty array if no pages are found.
 	 */
-	public function getPages($args = []);
+	public function getPages( $args = array() );
 
 
 // Comment-related lists
-public function getComments($postId);
+	public function getComments( $postId );
 
 // Settings and options-related lists
-public function getOptions();
-public function getThemes();
-public function getPlugins();
+	public function getOptions();
+
+	public function getThemes();
+
+	public function getPlugins();
 
 // Custom fields
-public function getCustomFields();
+	public function getCustomFields();
 
 }

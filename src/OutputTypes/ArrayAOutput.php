@@ -2,7 +2,6 @@
 
 namespace WebAppick\WPListInfo\OutputTypes;
 
-
 use WebAppick\WPListInfo\Interfaces\OutputTypeInterface;
 
 /**
@@ -12,7 +11,7 @@ use WebAppick\WPListInfo\Interfaces\OutputTypeInterface;
  * @subpackage WebAppick\WPListInfo\OutputTypes
  * @author   Ohidul Islam <wahid0003@gmail.com>
  * @link     https://webappick.com
- *@license  https://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license  https://opensource.org/licenses/gpl-license.php GNU Public License
  * @category Library
  */
 class ArrayAOutput implements OutputTypeInterface {
@@ -23,4 +22,5 @@ class ArrayAOutput implements OutputTypeInterface {
 	public function transform( $data ) {
 		return $data; // Return the associative array
 	}
+
 }

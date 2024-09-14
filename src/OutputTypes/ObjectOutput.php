@@ -8,12 +8,12 @@ use WebAppick\WPListInfo\Interfaces\OutputTypeInterface;
 /**
  * Class ObjectOutput
  *
- * @package CTXFeed
+ * @package WebAppick\WPListInfo\Services
  * @subpackage WebAppick\WPListInfo\OutputTypes
  * @author   Ohidul Islam <wahid0003@gmail.com>
  * @link     https://webappick.com
  *@license  https://opensource.org/licenses/gpl-license.php GNU Public License
- * @category MyCategory
+ * @category Library
  */
 class ObjectOutput implements OutputTypeInterface {
 	

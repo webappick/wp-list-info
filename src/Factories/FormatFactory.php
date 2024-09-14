@@ -2,8 +2,7 @@
 
 namespace WebAppick\WPListInfo\Factories;
 
-
-use WebAppick\WPListInfo\Formatters\CountryFormatter;
+use WebAppick\WPListInfo\Formatters\CountryFormat;
 
 /**
  * Class FormatFactory
@@ -16,24 +15,29 @@ use WebAppick\WPListInfo\Formatters\CountryFormatter;
  * @category Library
  */
 class FormatFactory {
+
 	/**
 	 * @throws \Exception
 	 */
-	public static function get($source, ...$params) {
-		switch ($source) {
+	public static function get( $source, ...$params ) {
+		switch ( $source ) {
 			case 'country':
-				$service = new CountryFormatter();
+				$service = new CountryFormat;
+
 				break;
+
 			default:
-				throw new \RuntimeException("Invalid source provided. Source $source does not exist.");
+				throw new \RuntimeException( "Invalid source provided. Source $source does not exist." );
 		}
 		
 		// Dynamically call the method on the service using the listType as the method name
 		$method = 'format';
-		if (method_exists($service, $method)) {
-			return call_user_func_array([$service, $method], $params);
+
+		if ( method_exists( $service, $method ) ) {
+			return call_user_func_array( array( $service, $method ), $params );
 		}
 		
-		throw new \RuntimeException("Invalid list type: Method $method does not exist.");
+		throw new \RuntimeException( "Invalid list type: Method $method does not exist." );
 	}
+
 }

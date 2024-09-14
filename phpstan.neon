@@ -1,0 +1,21 @@
+# phpstan.neon
+parameters:
+    level: max
+    treatPhpDocTypesAsCertain: false
+    inferPrivatePropertyTypeFromConstructor: true
+    checkGenericClassInNonGenericObjectType: false
+    # Void as typehints are available only on PHP 7.1+
+    checkMissingIterableValueType: false
+    paths:
+        - src # Path to the source code you want to analyze
+    excludePaths:
+        - tests/ # Exclude the tests directory from analysis
+        - vendor/ # Exclude the vendor directory from analysis
+    bootstrapFiles:
+        - vendor/autoload.php # Include the Composer autoload file
+    scanFiles:
+    scanDirectories:
+        - wp-content/plugins/ # Scan the plugin directory
+    ignoreErrors:
+        - '#Function __ not found.#'
+        - identifier: missingType.generics
