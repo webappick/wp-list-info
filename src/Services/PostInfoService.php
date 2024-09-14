@@ -1,4 +1,11 @@
 <?php
+/**
+ * This class is used to get information about a post.
+ *
+ * @package WebAppick\WPListInfo\Services
+ * @subpackage WebAppick\WPListInfo\Services
+ * @category Library
+ */
 
 namespace WebAppick\WPListInfo\Services;
 
@@ -6,7 +13,7 @@ use WebAppick\WPListInfo\Abstracts\AbstractInfo;
 use WebAppick\WPListInfo\Interfaces\InfoInterface;
 
 /**
- * Class PostInfoService
+ * Class PostInfoService.
  *
  * @package WebAppick\WPListInfo\Services
  * @subpackage WebAppick\WPListInfo\Services
@@ -20,10 +27,9 @@ class PostInfoService extends AbstractInfo implements InfoInterface {
 	/**
 	 * Get the information of a post by ID.
 	 *
-	 * @param int    $id  Post ID
+	 * @param int    $id  Post ID.
 	 * @param string $key Optional. The key of the information to get. Default is null.
-	 *
-	 * @return mixed Information of the post
+     * @return mixed Information of the post.
 	 */
 	public function getInfo( $id, $key = null ) {
 		// Validate the id or object first.
@@ -39,7 +45,11 @@ class PostInfoService extends AbstractInfo implements InfoInterface {
 		}
 		
 		// Get the post's parent, if any.
-		$parent = $post->post_parent ? get_post( $post->post_parent ) : null;
+		if ( $post->post_parent ) {
+			$parent = get_post( $post->post_parent );
+		} else {
+			$parent = null;
+		}
 		
 		$postInfo = array(
 			'post_id'             => $post->ID,
@@ -74,8 +84,7 @@ class PostInfoService extends AbstractInfo implements InfoInterface {
 		
 		return $postInfo;
 	}
-	
-	
+
 	/**
 	 * @inheritDoc
 	 */
@@ -106,4 +115,5 @@ class PostInfoService extends AbstractInfo implements InfoInterface {
 			'post_visibility',
 		);
 	}
+
 }
