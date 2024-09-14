@@ -25,6 +25,10 @@ class FormatFactory {
 				$service = new CountryFormat;
 
 				break;
+			case 'date':
+				$service = new CountryFormat;
+				
+				break;
 
 			default:
 				throw new \RuntimeException( "Invalid source provided. Source $source does not exist." );
