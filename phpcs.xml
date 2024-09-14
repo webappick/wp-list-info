@@ -9,12 +9,18 @@
     <!-- Ignore vendor directory -->
     <exclude-pattern>vendor/*</exclude-pattern>
 
+    <rule ref="WordPress">
+        <!-- Exclude specific checks for variable and function names -->
+        <exclude name="Squiz.NamingConventions.ValidVariableName.NotSnakeCase"/>
+        <exclude name="Squiz.NamingConventions.ValidFunctionName.NotSnakeCase"/>
+        <exclude name="WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase"/>
+        <exclude name="WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase"/>
+        <exclude name="PSR1.Methods.CamelCapsMethodName.NotCamelCaps"/>
+    </rule>
+
+
     <!-- Optionally adjust severity and report -->
     <arg name="severity" value="5"/>
     <arg name="report" value="full"/>
-
-    <!-- Exclude specific checks for variable and function names -->
-    <exclude name="Squiz.NamingConventions.ValidVariableName.NotSnakeCase"/>
-    <exclude name="Squiz.NamingConventions.ValidFunctionName.NotSnakeCase"/>
-    <exclude name="PSR1.Methods.CamelCapsMethodName.NotCamelCaps"/>
+    <arg name="colors"/>
 </ruleset>

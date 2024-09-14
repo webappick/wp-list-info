@@ -41,6 +41,8 @@ abstract class AbstractInfo {
 				return $id;
 			}
 			return wc_get_product($id);
+		}elseif ( 'post' === $objectType ) {
+			return get_post( $id );
 		}
 		
 		return $id;
