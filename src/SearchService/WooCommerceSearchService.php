@@ -99,7 +99,8 @@ class WooCommerceSearchService implements WooCommerceSearchInterface {
 	 *                    ]
 	 * @return array List of products.
 	 */
-	public function wc_products($searchTerm,$args = array()) {
+	public function wc_products($args = array()) {
+		
 		$defaults = [
 			'limit'   => -1,
 			'orderby' => 'date',
@@ -122,7 +123,14 @@ class WooCommerceSearchService implements WooCommerceSearchInterface {
 	 *                    ]
 	 * @return array List of orders.
 	 */
-	public function wc_orders($searchTerm,$args = array()) {
+	public function wc_orders($args = array()) {
+		// Get the search term
+		$searchTerm = '';
+		if(isset($args['s'])){
+			$searchTerm = $args['s'];
+			unset($args['s']);
+		}
+		
 		$defaults = [
 			'limit'   => 10,
 			'orderby' => 'date',
@@ -145,7 +153,15 @@ class WooCommerceSearchService implements WooCommerceSearchInterface {
 	 *                    ]
 	 * @return array List of customers.
 	 */
-	public function wc_customers($searchTerm,$args = array()) {
+	public function wc_customers($args = array()) {
+		
+		// Get the search term
+		$searchTerm = '';
+		if(isset($args['s'])){
+			$searchTerm = $args['s'];
+			unset($args['s']);
+		}
+		
 		$defaults = [
 			'role'    => 'customer',
 			'number'  => -1,
@@ -169,7 +185,15 @@ class WooCommerceSearchService implements WooCommerceSearchInterface {
 	 *                    ]
 	 * @return array List of coupons.
 	 */
-	public function wc_coupons($searchTerm,$args = array()) {
+	public function wc_coupons($args = array()) {
+		
+		// Get the search term
+		$searchTerm = '';
+		if(isset($args['s'])){
+			$searchTerm = $args['s'];
+			unset($args['s']);
+		}
+		
 		$defaults = [
 			'post_type'      => 'shop_coupon',
 			'posts_per_page' => -1,
@@ -190,7 +214,15 @@ class WooCommerceSearchService implements WooCommerceSearchInterface {
 	 * @param string $taxonomy The taxonomy slug to retrieve terms for.
 	 * @return array List of product attribute terms.
 	 */
-	public function wc_product_attribute_options($taxonomy,$args = array()) {
+	public function wc_product_attribute_options($args = array()) {
+		
+		// Get the search term
+		$taxonomy = '';
+		if(isset($args['s'])){
+			$taxonomy = $args['s'];
+			unset($args['s']);
+		}
+		
 		return get_terms([
 			'taxonomy'   => $taxonomy,
 			'hide_empty' => false,
@@ -204,7 +236,13 @@ class WooCommerceSearchService implements WooCommerceSearchInterface {
 	 *
 	 * @return bool|\WC_Shipping_Zone
 	 */
-	public function wc_shipping_zone_methods($zoneId,$args = array()) {
+	public function wc_shipping_zone_methods($args = array()) {
+		// Get the search term
+		$zoneId = '';
+		if(isset($args['s'])){
+			$zoneId = $args['s'];
+			unset($args['s']);
+		}
 		return WC_Shipping_Zones::get_zone($zoneId);
 	}
 	
@@ -213,7 +251,15 @@ class WooCommerceSearchService implements WooCommerceSearchInterface {
 	 *
 	 * @return array List of product categories.
 	 */
-	public function wc_categories($searchTerm,$args = array()) {
+	public function wc_categories($args = array()) {
+		
+		// Get the search term
+		$searchTerm = '';
+		if(isset($args['s'])){
+			$searchTerm = $args['s'];
+			unset($args['s']);
+		}
+		
 		return get_terms([
 			'taxonomy'   => 'product_cat',
 			'hide_empty' => false,
@@ -225,7 +271,14 @@ class WooCommerceSearchService implements WooCommerceSearchInterface {
 	 *
 	 * @return array List of product tags.
 	 */
-	public function wc_tags($searchTerm,$args = array()) {
+	public function wc_tags($args = array()) {
+		// Get the search term
+		$searchTerm = '';
+		if(isset($args['s'])){
+			$searchTerm = $args['s'];
+			unset($args['s']);
+		}
+		
 		return get_terms([
 			'taxonomy'   => 'product_tag',
 			'hide_empty' => false,
@@ -237,7 +290,14 @@ class WooCommerceSearchService implements WooCommerceSearchInterface {
 	 *
 	 * @return array List of product attributes.
 	 */
-	public function wc_attributes($searchTerm,$args = array()) {
+	public function wc_attributes($args = array()) {
+		// Get the search term
+		$searchTerm = '';
+		if(isset($args['s'])){
+			$searchTerm = $args['s'];
+			unset($args['s']);
+		}
+		
 		return wc_get_attribute_taxonomies();
 	}
 	
