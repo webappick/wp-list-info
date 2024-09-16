@@ -40,12 +40,18 @@ class WPListInfo {
 		
 		$data = ( new ServiceStrategy( new $class ) )->getList($args );
 		
+		// Check if the format is set
 		if( ! isset( $args['format'] ) ) {
 			$args['format'] = [];
 		}
 		
+		// Check if the output is set and valid
+		if (!isset($args['output']) || !in_array($args['output'], ['ARRAY', 'OBJECT', 'array', 'object'])) {
+			$args['output'] = 'OBJECT';
+		}
+		
 		// Format the data
-		return FormatFactory::format( $type, $data, $args['format'] );
+		return FormatFactory::format( $type, $data, $args['format'], $args['output'] );
 	}
 
 }

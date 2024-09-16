@@ -23,10 +23,10 @@ class PostFormat extends FormattingAbstract {
 	 *
 	 * @param array        $data   Data to be formatted
 	 * @param array        $format Output format
-	 *
+	 * @param string       $output Output type (OBJECT,ARRAY)
 	 * @return mixed
 	 */
-	public function format( $data, $format) {
+	public function format( $data, $format, $output ) {
 		// return the formatted data as [['id' => 1, 'name' => 'Post Title', 'code' => slug, 'image' => thumbnail_url], ...]]
 		$formattedList = [];
 		
@@ -43,7 +43,7 @@ class PostFormat extends FormattingAbstract {
 			$postImage = get_the_post_thumbnail_url($postId);      // Post Image URL
 			
 			// Add the formatted post to the list
-			$formattedList[$post_key] = [
+			$postInfo = [
 				'id'   => $postId,
 				'name' => $postTitle,
 				'code' => $postSlug,
@@ -53,9 +53,16 @@ class PostFormat extends FormattingAbstract {
 			// If the format is not empty, add the formatted post info to the list.
 			if ( ! empty( $format ) ) {
 				foreach ($format as $key) {
-					$formattedList[$post_key][$key] = WPListInfo::GetInfo($key, $post);
+					$postInfo[$key] = WPListInfo::GetInfo($key, $post);
 				}
 			}
+			
+			// If the output is set to 'OBJECT', convert the post info to an object
+			if ( $output === 'OBJECT' || $output === 'object' ) {
+				$postInfo = (object) $postInfo;
+			}
+			
+			$formattedList[$post_key] = $postInfo;
 			
 		}
 		

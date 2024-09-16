@@ -22,8 +22,8 @@ class FormatStrategy {
 		$this->format = $format;
 	}
 	
-	public function format($data, $format) {
-		return $this->format->format($data, $format);
+	public function format($data, $format, $output) {
+		return $this->format->format($data, $format, $output);
 	}
 	
 

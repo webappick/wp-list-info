@@ -21,14 +21,14 @@ class FormatFactory {
 	/**
 	 * @throws \Exception
 	 */
-	public static function format( $source, $data, $format = [] ) {
+	public static function format( $source, $data, $format, $output ) {
 		$class = 'WebAppick\WPListInfo\Format\\' . ucfirst( strtolower($source) ) . 'Format';
 		
 		if ( ! class_exists( $class ) ) {
 			throw new \RuntimeException( "Invalid source provided. Formatting source ". $class ." does not exist." );
 		}
 		
-		return (new FormatStrategy( new $class ))->format( $data, $format );
+		return (new FormatStrategy( new $class ))->format( $data, $format, $output );
 	}
 
 }

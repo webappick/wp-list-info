@@ -13,6 +13,7 @@ class WPListInfoTest extends TestCase {
 		$list = WPListInfo::GetList('post');
 		$this->assertIsArray($list);
 		$list_with_args = WPListInfo::GetList('post', ['format' => ['post_id', 'post_title']]);
+		print_r( $list_with_args );
 		$this->assertIsArray($list_with_args);
 		$key = array_key_first( $list_with_args );
 		if(is_array( $list_with_args[$key] )) {
