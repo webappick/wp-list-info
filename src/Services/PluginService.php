@@ -1,18 +1,18 @@
 <?php
 
-namespace WebAppick\WPListInfo\InfoServices;
+namespace WebAppick\WPListInfo\Services;
 
 use WebAppick\WPListInfo\Abstracts\AbstractInfo;
-use WebAppick\WPListInfo\Interfaces\InfoInterface;
+use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 
 /**
- * Class PluginInfoService
+ * Class PluginService
  *
- * @package WebAppick\WPListInfo\InfoServices
- * @subpackage WebAppick\WPListInfo\InfoServices
+ * @package WebAppick\WPListInfo\Services
+ * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
-class PluginInfoService extends AbstractInfo implements InfoInterface {
+class PluginService extends AbstractInfo implements ServiceInterface {
 	
 	/**
 	 * Retrieve information about a specific plugin.

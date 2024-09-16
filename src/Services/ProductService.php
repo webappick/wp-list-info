@@ -2,29 +2,43 @@
 /**
  * Product Info Service
  *
- * This file contains the ProductInfoService class.
+ * This file contains the ProductService class.
  *
- * @package WebAppick\WPListInfo\InfoServices
- * @subpackage WebAppick\WPListInfo\InfoServices
+ * @package WebAppick\WPListInfo\Services
+ * @subpackage WebAppick\WPListInfo\Services
  */
 
-namespace WebAppick\WPListInfo\InfoServices;
+namespace WebAppick\WPListInfo\Services;
 
 use WebAppick\WPListInfo\Abstracts\AbstractInfo;
-use WebAppick\WPListInfo\Interfaces\InfoInterface;
+use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 
 /**
- * Class ProductInfoService
+ * Class ProductService
  *
- * @package WebAppick\WPListInfo\InfoServices
- * @subpackage WebAppick\WPListInfo\InfoServices
+ * @package WebAppick\WPListInfo\Services
+ * @subpackage WebAppick\WPListInfo\Services
  * @author   Ohidul Islam <wahid0003@gmail.com>
  * @link     https://webappick.com
  * @license  https://opensource.org/licenses/gpl-license.php GNU Public License
  * @category Library
  */
-class ProductInfoService extends AbstractInfo implements InfoInterface {
+class ProductService extends AbstractInfo implements ServiceInterface {
 	
+	public function getList( $args = array() ) {
+		
+		$defaults = [
+			'limit'   => -1,
+			'orderby' => 'date',
+			'order'   => 'DESC',
+			'status'  => 'publish',
+		];
+		
+		$queryArgs = wp_parse_args($args, $defaults);
+		$products  = wc_get_products($queryArgs);
+		
+		return !empty($products) ? $products : [];
+	}
 	/**
 	 * Retrieve information about a specific product.
 	 *

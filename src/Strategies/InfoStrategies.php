@@ -3,7 +3,7 @@
 namespace WebAppick\WPListInfo\Strategies;
 
 
-use WebAppick\WPListInfo\Interfaces\InfoInterface;
+use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 
 /**
  * Class InfoStrategies
@@ -18,7 +18,7 @@ use WebAppick\WPListInfo\Interfaces\InfoInterface;
 class InfoStrategies {
 	private $info;
 	
-	public function __construct(InfoInterface $info) {
+	public function __construct(ServiceInterface $info) {
 		$this->info = $info;
 	}
 	

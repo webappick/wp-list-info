@@ -1,21 +1,21 @@
 <?php
 
-namespace WebAppick\WPListInfo\InfoServices;
+namespace WebAppick\WPListInfo\Services;
 
 use WebAppick\WPListInfo\Abstracts\AbstractInfo;
-use WebAppick\WPListInfo\Interfaces\InfoInterface;
+use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 
 /**
- * Class ReviewInfoService
+ * Class ReviewService
  *
  * @category Library
- * @package WebAppick\WPListInfo\InfoServices
- * @subpackage WebAppick\WPListInfo\InfoServices
+ * @package WebAppick\WPListInfo\Services
+ * @subpackage WebAppick\WPListInfo\Services
  * @author
  * @license  https://opensource.org/licenses/gpl-license.php GNU Public License
  * @link     https://webappick.com
  */
-class ReviewInfoService extends AbstractInfo implements InfoInterface {
+class ReviewService extends AbstractInfo implements ServiceInterface {
 	
 	/**
 	 * Retrieve information about a specific review.

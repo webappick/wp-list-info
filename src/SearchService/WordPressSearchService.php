@@ -217,10 +217,6 @@ class WordPressSearchService implements WordPressSearchInterface
 	}
 	
 	
-	
-	/**
-	 * @inheritDoc
-	 */
 	public function wp_taxonomies($searchTerm, $args = array()) {
 		// Fetch all public taxonomies
 		$taxonomies = get_taxonomies( array( 'public' => true ), 'objects' );  // Return taxonomy names instead of full objects

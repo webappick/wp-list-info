@@ -1,18 +1,18 @@
 <?php
 
-namespace WebAppick\WPListInfo\InfoServices;
+namespace WebAppick\WPListInfo\Services;
 
 use WebAppick\WPListInfo\Abstracts\AbstractInfo;
-use WebAppick\WPListInfo\Interfaces\InfoInterface;
+use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 
 /**
- * Class PaymentInfoService
+ * Class PaymentService
  *
- * @package WebAppick\WPListInfo\InfoServices
- * @subpackage WebAppick\WPListInfo\InfoServices
+ * @package WebAppick\WPListInfo\Services
+ * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
-class PaymentInfoService extends AbstractInfo implements InfoInterface {
+class PaymentService extends AbstractInfo implements ServiceInterface {
 	
 	/**
 	 * Retrieve information about a specific payment.

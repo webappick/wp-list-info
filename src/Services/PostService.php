@@ -2,27 +2,27 @@
 /**
  * This class is used to get information about a post.
  *
- * @package WebAppick\WPListInfo\InfoServices
- * @subpackage WebAppick\WPListInfo\InfoServices
+ * @package WebAppick\WPListInfo\Services
+ * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
 
-namespace WebAppick\WPListInfo\InfoServices;
+namespace WebAppick\WPListInfo\Services;
 
 use WebAppick\WPListInfo\Abstracts\AbstractInfo;
-use WebAppick\WPListInfo\Interfaces\InfoInterface;
+use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 
 /**
- * Class PostInfoService.
+ * Class PostService.
  *
- * @package WebAppick\WPListInfo\InfoServices
- * @subpackage WebAppick\WPListInfo\InfoServices
+ * @package WebAppick\WPListInfo\Services
+ * @subpackage WebAppick\WPListInfo\Services
  * @author   Ohidul Islam <wahid0003@gmail.com>
  * @link     https://webappick.com
  * @license  https://opensource.org/licenses/gpl-license.php GNU Public License
  * @category Library
  */
-class PostInfoService extends AbstractInfo implements InfoInterface {
+class PostService extends AbstractInfo implements ServiceInterface {
 	
 	/**
 	 * Get the information of a post by ID.

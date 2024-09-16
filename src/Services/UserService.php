@@ -1,18 +1,18 @@
 <?php
 
-namespace WebAppick\WPListInfo\InfoServices;
+namespace WebAppick\WPListInfo\Services;
 
 use WebAppick\WPListInfo\Abstracts\AbstractInfo;
-use WebAppick\WPListInfo\Interfaces\InfoInterface;
+use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 
 /**
- * Class UserInfoService
+ * Class UserService
  *
- * @package WebAppick\WPListInfo\InfoServices
- * @subpackage WebAppick\WPListInfo\InfoServices
+ * @package WebAppick\WPListInfo\Services
+ * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
-class UserInfoService extends AbstractInfo implements InfoInterface {
+class UserService extends AbstractInfo implements ServiceInterface {
 	
 	/**
 	 * Retrieve information about a specific user.

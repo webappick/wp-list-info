@@ -1,17 +1,17 @@
 <?php
 
-namespace WebAppick\WPListInfo\InfoServices;
+namespace WebAppick\WPListInfo\Services;
 
 /**
- * Class SubscriptionInfoService
+ * Class SubscriptionService
  *
  * @category Library
- * @package WebAppick\WPListInfo\InfoServices
- * @subpackage WebAppick\WPListInfo\InfoServices
+ * @package WebAppick\WPListInfo\Services
+ * @subpackage WebAppick\WPListInfo\Services
  * @author   Ohidul Islam <wahid0003@gmail.com>
  * @license  https://opensource.org/licenses/gpl-license.php GNU Public License
  * @link     https://webappick.com
  */
-class SubscriptionInfoService {
+class SubscriptionService {
 
 }

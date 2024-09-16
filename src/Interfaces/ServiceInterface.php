@@ -5,12 +5,20 @@ namespace WebAppick\WPListInfo\Interfaces;
 use WC_DateTime;
 
 /**
- * Class InfoInterface
+ * Class ServiceInterface
  *
  * @package WebAppick\WPListInfo\Interfaces
  * @subpackage WebAppick\WPListInfo\Interfaces
  */
-interface InfoInterface {
+interface ServiceInterface {
+	
+	/**
+	 * Retrieve a list of entities (posts, products, users, etc.).
+	 *
+	 * @param array $args The arguments for the list of entities.
+	 * @return array An array of entities.
+	 */
+	public function getList( $args = array() );
 
 	/**
 	 * Retrieve information about a specific entity (post, product, user, etc.).

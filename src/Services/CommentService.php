@@ -1,18 +1,18 @@
 <?php
 
-namespace WebAppick\WPListInfo\InfoServices;
+namespace WebAppick\WPListInfo\Services;
 
 use WebAppick\WPListInfo\Abstracts\AbstractInfo;
-use WebAppick\WPListInfo\Interfaces\InfoInterface;
+use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 
 /**
- * Class CommentInfoService
+ * Class CommentService
  *
- * @package WebAppick\WPListInfo\InfoServices
- * @subpackage WebAppick\WPListInfo\InfoServices
+ * @package WebAppick\WPListInfo\Services
+ * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
-class CommentInfoService extends AbstractInfo implements InfoInterface {
+class CommentService extends AbstractInfo implements ServiceInterface {
 	
 	/**
 	 * Retrieve information about a specific comment.
@@ -56,6 +56,7 @@ class CommentInfoService extends AbstractInfo implements InfoInterface {
 	 * Retrieve a list of keys for the comment.
 	 *
 	 * @return array An array of keys for the comment.
+	 * @throws \Exception
 	 */
 	public function getKeys() {
 		return array(
