@@ -1,0 +1,3 @@
+https://github.com/wol-soft/php-json-schema-model-generator
+https://github.com/api-platform/schema-generator
+https://github.com/spiral/json-schema-generator
