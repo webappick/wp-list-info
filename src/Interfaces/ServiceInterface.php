@@ -22,12 +22,11 @@ interface ServiceInterface {
 
 	/**
 	 * Retrieve information about a specific entity (post, product, user, etc.).
-	 *
-	 * @param int|object  $id The ID or Object for the entity.
-	 * @param string|null $key The key for the entity.
+	 *  @param string|null $key The key for the entity.
+	 * @param int|object  $idObject The ID or Object for the entity.
      * @return array|bool|float|int|string|WC_DateTime|null An array of all or single information about the entity.
 	 */
-	public function getInfo( $id, $key = null );
+	public function getInfo( $key, $idObject);
 	
 	/**
 	 * Retrieve a list of keys for the entity.

@@ -6,7 +6,7 @@ namespace WebAppick\WPListInfo\Format;
 use WebAppick\WPListInfo\Abstracts\FormattingAbstract;
 
 /**
- * Class DateFormat
+ * Class TaxonomyFormat
  *
  * @package CTXFeed
  * @subpackage WebAppick\WPListInfo\Formatters
@@ -15,12 +15,17 @@ use WebAppick\WPListInfo\Abstracts\FormattingAbstract;
  *@license  https://opensource.org/licenses/gpl-license.php GNU Public License
  * @category MyCategory
  */
-class DateFormat extends FormattingAbstract {
+class TaxonomyFormat  extends FormattingAbstract{
 	
 	/**
-	 * @inheritDoc
+	 *  Format the data according to the structure
+	 *
+	 * @param array        $data   Data to be formatted
+	 * @param string|array $format Output format
+	 *
+	 * @return mixed
 	 */
-	public function format( $data, $format, $output ) {
+	public function format( $data, $format) {
 		// TODO: Implement format() method.
 	}
 }

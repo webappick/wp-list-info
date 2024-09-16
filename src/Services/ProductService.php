@@ -68,18 +68,18 @@ class ProductService extends AbstractInfo implements ServiceInterface {
 	/**
 	 * Retrieve information about a specific product.
 	 *
-	 * @param int|object  $id The ID or Object for the product.
 	 * @param string|null $key The key for the product.
+	 * @param int|object  $idObject The ID or Object for the product.
 	 * @return array|bool|float|int|string|\WC_DateTime|null An array of all or single information about the product.
 	 */
-	public function getInfo( $id, $key = null ) { // phpcs:ignore
+	public function getInfo( $key, $idObject ) { // phpcs:ignore
 		
 		// Validate the id or object first.
-		if ( !$this->validate( $id ) ) {
+		if ( !$this->validate( $idObject ) ) {
 			return null;
 		}
 		
-        $product = $this->getObject( $id, 'product' );
+        $product = $this->getObject( $idObject, 'product' );
 
 		if ( ! $product ) {
 			return null;

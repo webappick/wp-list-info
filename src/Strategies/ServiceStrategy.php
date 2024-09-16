@@ -6,7 +6,7 @@ namespace WebAppick\WPListInfo\Strategies;
 use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 
 /**
- * Class InfoStrategies
+ * Class ServiceStrategy
  *
  * @package CTXFeed
  * @subpackage WebAppick\WPListInfo\Strategies
@@ -15,15 +15,19 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
  *@license  https://opensource.org/licenses/gpl-license.php GNU Public License
  * @category MyCategory
  */
-class InfoStrategies {
+class ServiceStrategy {
 	private $info;
 	
 	public function __construct(ServiceInterface $info) {
 		$this->info = $info;
 	}
 	
-	public function getInfo($type, $key) {
-		return $this->info->getInfo($type, $key);
+	public function getList($args = array()) {
+		return $this->info->getList($args);
+	}
+	
+	public function getInfo($key, $idObject) {
+		return $this->info->getInfo($key, $idObject);
 	}
 	
 	public function getKeys() {

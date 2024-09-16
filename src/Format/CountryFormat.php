@@ -1,6 +1,6 @@
 <?php
 
-namespace WebAppick\WPListInfo\Formatters;
+namespace WebAppick\WPListInfo\Format;
 
 use WebAppick\WPListInfo\Abstracts\FormattingAbstract;
 
@@ -35,13 +35,12 @@ class CountryFormat extends FormattingAbstract {
 	 *
 	 *                       Available variables: code_country, code_state, country, state
 	 *                       You can use any of the available variables in the format string to get the desired output.
-	 * @param string $output OBJECT|ARRAY_A Output Type
 	 * @return array Formatted list of countries and states
 	 *               Examples:
 	 *               [ ['id' => 'US', 'name' => 'United States'] ] if no states are present or state not exist in format
 	 *               [ ['id' => 'US:NY', 'name' => 'New York, United States'] ] if state is present in format
 	 */
-	public function format( $data, $format = 'country', $output = OBJECT ) {
+	public function format( $data, $format) {
 		$formattedList = [];
 		
 		// If there is no data, return an empty list

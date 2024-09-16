@@ -26,51 +26,20 @@ use WP_Query;
 class PostService extends AbstractInfo implements ServiceInterface {
 	
 	/**
-	 * Retrieve or Search a list of posts based on specified arguments.
-	 *
-	 * @param array $args Optional. Arguments to query posts.
-	 *                    Example: [
-	 *                      'post_type'      => 'post',
-	 *                      'posts_per_page' => 20,
-	 *                      'orderby'        => 'date',
-	 *                      'order'          => 'DESC',
-	 *                    ].
-	 * @return array List of WP_Post objects or an empty array if no posts are found.
-	 */
-	public function getList( $args = array() ) {
-		$defaults = array(
-			'post_type'      => 'post',
-			'posts_per_page' => 20,
-			'orderby'        => 'date',
-			'order'          => 'DESC',
-		);
-		
-		$queryArgs = wp_parse_args( $args, $defaults );
-		$query     = new WP_Query( $queryArgs );
-		$posts     = $query->get_posts();
-		
-		if ( ! empty( $posts ) ) {
-			return $posts;
-		}
-		
-		return array();
-	}
-
-	/**
 	 * Get the information of a post by ID.
 	 *
-	 * @param int    $id  Post ID.
-	 * @param string $key Optional. The key of the information to get. Default is null.
+	 * @param string     $key Optional. The key of the information to get. Default is null.
+	 * @param int|object $idObject  Post ID or Post Object.
      * @return mixed Information of the post.
 	 */
-	public function getInfo( $id, $key = null ) {
+	public function getInfo( $key, $idObject ) {
 		// Validate the id or object first.
-		if ( ! $this->validate( $id ) ) {
+		if ( ! $this->validate( $idObject ) ) {
 			return null;
 		}
 		
 		// Get the post object.
-		$post = $this->getObject( $id, 'post' );
+		$post = $this->getObject( $idObject, 'post' );
 		
 		if ( ! $post ) {
 			return null;
@@ -110,11 +79,42 @@ class PostService extends AbstractInfo implements ServiceInterface {
 		);
 		
 		// If a specific key is requested, return that.
-		if ( ! empty( $key ) ) {
-			return $postInfo[ $key ] ?? '';
+		if ( ! empty( $key ) && isset( $postInfo[ $key ] ) ) {
+			return $postInfo[ $key ];
 		}
 		
 		return $postInfo;
+	}
+	
+	/**
+	 * Retrieve or Search a list of posts based on specified arguments.
+	 *
+	 * @param array $args Optional. Arguments to query posts.
+	 *                    Example: [
+	 *                      'post_type'      => 'post',
+	 *                      'posts_per_page' => 20,
+	 *                      'orderby'        => 'date',
+	 *                      'order'          => 'DESC',
+	 *                    ].
+	 * @return array List of WP_Post objects or an empty array if no posts are found.
+	 */
+	public function getList( $args = array() ) {
+		$defaults = array(
+			'post_type'      => 'post',
+			'posts_per_page' => 20,
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+		);
+		
+		$queryArgs = wp_parse_args( $args, $defaults );
+		$query     = new WP_Query( $queryArgs );
+		$posts     = $query->get_posts();
+		
+		if ( ! empty( $posts ) ) {
+			return $posts;
+		}
+		
+		return array();
 	}
 
 	/**
@@ -122,29 +122,29 @@ class PostService extends AbstractInfo implements ServiceInterface {
 	 */
 	public function getKeys() {
 		return array(
-			'post_id',
-			'post_title',
-			'post_slug',
-			'post_url',
-			'post_status',
-			'post_author',
-			'post_date',
-			'post_modified_date',
-			'post_excerpt',
-			'post_content',
-			'post_comment_count',
-			'post_thumbnail_id',
-			'post_thumbnail_url',
-			'post_parent_id',
-			'post_parent_title',
-			'post_parent_url',
-			'post_categories',
-			'post_tags',
-			'post_meta',
-			'post_type',
-			'post_ping_status',
-			'post_comment_status',
-			'post_visibility',
+			'post_id'             => __( 'Post ID', 'wp-list-info' ),
+			'post_title'          => __( 'Post Title', 'wp-list-info' ),
+			'post_slug'           => __( 'Post Slug', 'wp-list-info' ),
+			'post_url'            => __( 'Post URL', 'wp-list-info' ),
+			'post_status'         => __( 'Post Status', 'wp-list-info' ),
+			'post_author'         => __( 'Post Author', 'wp-list-info' ),
+			'post_date'           => __( 'Post Date', 'wp-list-info' ),
+			'post_modified_date'  => __( 'Post Modified Date', 'wp-list-info' ),
+			'post_excerpt'        => __( 'Post Excerpt', 'wp-list-info' ),
+			'post_content'        => __( 'Post Content', 'wp-list-info' ),
+			'post_comment_count'  => __( 'Post Comment Count', 'wp-list-info' ),
+			'post_thumbnail_id'   => __( 'Post Thumbnail ID', 'wp-list-info' ),
+			'post_thumbnail_url'  => __( 'Post Thumbnail URL', 'wp-list-info' ),
+			'post_parent_id'      => __( 'Post Parent ID', 'wp-list-info' ),
+			'post_parent_title'   => __( 'Post Parent Title', 'wp-list-info' ),
+			'post_parent_url'     => __( 'Post Parent URL', 'wp-list-info' ),
+			'post_categories'     => __( 'Post Categories', 'wp-list-info' ),
+			'post_tags'           => __( 'Post Tags', 'wp-list-info' ),
+			'post_meta'           => __( 'Post Meta', 'wp-list-info' ),
+			'post_type'           => __( 'Post Type', 'wp-list-info' ),
+			'post_ping_status'    => __( 'Post Ping Status', 'wp-list-info' ),
+			'post_comment_status' => __( 'Post Comment Status', 'wp-list-info' ),
+			'post_visibility'     => __( 'Post Visibility', 'wp-list-info' ),
 		);
 	}
 

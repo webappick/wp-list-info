@@ -3,7 +3,7 @@
 namespace WebAppick\WPListInfo\Factories;
 
 
-use WebAppick\WPListInfo\Strategies\InfoStrategies;
+use WebAppick\WPListInfo\Strategies\ServiceStrategy;
 
 /**
  * Class InfoFactory
@@ -33,7 +33,7 @@ class WPInfoFactory {
 			throw new \RuntimeException( "Invalid source provided. Source $source does not exist." );
 		}
 		
-		return (new InfoStrategies( new $class ))->getInfo($idObject, $key);
+		return (new ServiceStrategy( new $class ))->getInfo($idObject, $key);
 	}
 	
 	public static function getKeys( $type ) {
@@ -46,6 +46,6 @@ class WPInfoFactory {
 			throw new \RuntimeException( "Invalid source provided. Source $source does not exist." );
 		}
 		
-		return (new InfoStrategies( new $class ))->getKeys();
+		return (new ServiceStrategy( new $class ))->getKeys();
 	}
 }

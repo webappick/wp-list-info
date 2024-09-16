@@ -15,9 +15,8 @@ abstract class FormattingAbstract {
      *
 	 * @param array        $data Data to be formatted
 	 * @param string|array $format Output format
-	 * @param string       $output OBJECT|ARRAY_A Output Type
 	 * @return mixed
 	 */
-	abstract public function format( $data, $format, $output );
+	abstract public function format( $data, $format );
 
 }
