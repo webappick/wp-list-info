@@ -40,12 +40,12 @@ class WPListInfo {
 		
 		$data = ( new ServiceStrategy( new $class ) )->getList($args );
 		
-		$formattedData = FormatFactory::format( $type, $data, $args['format'] );
+		if( ! isset( $args['format'] ) ) {
+			$args['format'] = [];
+		}
 		
-		return $formattedData;
-	}
-	
-	public static function Search( $args = array() ) {
+		// Format the data
+		return FormatFactory::format( $type, $data, $args['format'] );
 	}
 
 }
