@@ -10,6 +10,7 @@
 
 namespace WebAppick\WPListInfo\Services;
 
+use WC_Product_Query;
 use WebAppick\WPListInfo\Abstracts\AbstractInfo;
 use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 
@@ -26,35 +27,44 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 class ProductService extends AbstractInfo implements ServiceInterface {
 	
 	/**
-	 * Get or Search the list of products.
+	 * Get a list of WooCommerce products based on provided arguments.
 	 *
-	 * @param array $args Optional. Additional arguments for filtering the product list.
+	 * @param array $args Optional arguments for querying products.
 	 *                    Example: [
-	 *                        'limit' => 10,// Limit the number of products returned
-	 *                        'orderby' => 'date',// Order the products by date
-	 *                        'order' => 'DESC',// Order the products in descending order
-	 *                        'status' => 'publish',// Filter the products by status
+	 *                        'limit' => 20,
+	 *                        'orderby'=> 'date',
+	 *                        'order' => 'DESC',
+	 *                        'status'=> 'publish'
 	 *                    ].
-	 * @return array List of products.
+	 * @return array List of products, formatted if necessary.
 	 */
 	public function getList( $args = array() ) {
+		// Define default arguments
 		$defaults = array(
-			'limit'   => -1,
-			'orderby' => 'date',
-			'order'   => 'DESC',
-			'status'  => 'publish',
+			'limit'   => 20,            // Fetch all products by default
+			'orderby' => 'date',        // Order by date by default
+			'order'   => 'DESC',        // Order in descending order by default
+			'status'  => 'publish',     // Only fetch published products by default
 		);
 		
+		// Merge provided arguments with the defaults
 		$queryArgs = wp_parse_args( $args, $defaults );
-		$products  = wc_get_products( $queryArgs );
 		
+		// Use WC_Product_Query with the merged arguments
+		$query = new WC_Product_Query( $queryArgs );
+		
+		// Get the list of products
+		$products = $query->get_products();
+		
+		// Check if products are found and return formatted output if needed
 		if ( ! empty( $products ) ) {
-			return $products; // TODO: Format output.
+			return $products;
 		}
 		
+		// Return an empty array if no products are found
 		return array();
 	}
-
+	
 	/**
 	 * Retrieve information about a specific product.
 	 *

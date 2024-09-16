@@ -11,6 +11,7 @@ namespace WebAppick\WPListInfo\Services;
 
 use WebAppick\WPListInfo\Abstracts\AbstractInfo;
 use WebAppick\WPListInfo\Interfaces\ServiceInterface;
+use WP_Query;
 
 /**
  * Class PostService.
@@ -24,6 +25,37 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
  */
 class PostService extends AbstractInfo implements ServiceInterface {
 	
+	/**
+	 * Retrieve or Search a list of posts based on specified arguments.
+	 *
+	 * @param array $args Optional. Arguments to query posts.
+	 *                    Example: [
+	 *                      'post_type'      => 'post',
+	 *                      'posts_per_page' => 20,
+	 *                      'orderby'        => 'date',
+	 *                      'order'          => 'DESC',
+	 *                    ].
+	 * @return array List of WP_Post objects or an empty array if no posts are found.
+	 */
+	public function getList( $args = array() ) {
+		$defaults = array(
+			'post_type'      => 'post',
+			'posts_per_page' => 20,
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+		);
+		
+		$queryArgs = wp_parse_args( $args, $defaults );
+		$query     = new WP_Query( $queryArgs );
+		$posts     = $query->get_posts();
+		
+		if ( ! empty( $posts ) ) {
+			return $posts;
+		}
+		
+		return array();
+	}
+
 	/**
 	 * Get the information of a post by ID.
 	 *
