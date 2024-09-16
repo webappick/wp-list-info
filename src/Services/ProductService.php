@@ -25,20 +25,36 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
  */
 class ProductService extends AbstractInfo implements ServiceInterface {
 	
+	/**
+	 * Get or Search the list of products.
+	 *
+	 * @param array $args Optional. Additional arguments for filtering the product list.
+	 *                    Example: [
+	 *                        'limit' => 10,// Limit the number of products returned
+	 *                        'orderby' => 'date',// Order the products by date
+	 *                        'order' => 'DESC',// Order the products in descending order
+	 *                        'status' => 'publish',// Filter the products by status
+	 *                    ].
+	 * @return array List of products.
+	 */
 	public function getList( $args = array() ) {
-		
-		$defaults = [
+		$defaults = array(
 			'limit'   => -1,
 			'orderby' => 'date',
 			'order'   => 'DESC',
 			'status'  => 'publish',
-		];
+		);
 		
-		$queryArgs = wp_parse_args($args, $defaults);
-		$products  = wc_get_products($queryArgs);
+		$queryArgs = wp_parse_args( $args, $defaults );
+		$products  = wc_get_products( $queryArgs );
 		
-		return !empty($products) ? $products : [];
+		if ( ! empty( $products ) ) {
+			return $products; // TODO: Format output.
+		}
+		
+		return array();
 	}
+
 	/**
 	 * Retrieve information about a specific product.
 	 *
@@ -130,8 +146,8 @@ class ProductService extends AbstractInfo implements ServiceInterface {
 			'product_is_visible'         => $product->is_visible(),
 		);
 		
-		if ( ! empty( $key ) ) {
-			return $productInfo[$key] ?? '';
+		if ( ! empty( $key ) && isset( $productInfo[ $key ] ) ) {
+			return $productInfo[$key];
 		}
 
 		return $productInfo;
