@@ -1,7 +1,5 @@
 <?php
 
-namespace WebAppick\WPListInfo\Tests\Factories;
-
 use PHPUnit\Framework\TestCase;
 use Spatie\SchemaOrg\LocalBusiness;
 use WebAppick\WPListInfo\Factories\WPListInfo;
@@ -28,14 +26,14 @@ class WPListInfoTest extends TestCase
         }
     }
 
-    public function testSchema(): void
+    public function testSchema()
     {
         $localBusiness = new LocalBusiness();
         $localBusiness->name('Spatie');
         $localBusiness->address('Koningin Maria Hendrikaplein 64');
-        
-
-        print_r($localBusiness->toArray());
+	    $localBusiness->toArray();
+	    
+	    echo $localBusiness->toScript();
     }
 
 //  public function testGetKeys() {

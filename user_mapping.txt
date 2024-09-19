@@ -1,0 +1,262 @@
+
+
+
+/src
+    /Schema
+        SchemaInterface.php
+        AbstractSchema.php
+        ProductSchema.php
+        ArticleSchema.php
+        SchemaManager.php
+    /Mapping
+        MappingInterface.php
+        AbstractMapping.php
+        ProductMapping.php
+        ArticleMapping.php
+        MappingManager.php
+    /Services
+        SchemaGenerationService.php
+        MappingService.php
+
+
+The MappingManager.php will be responsible for managing the mapping logic across different schema types (e.g., Product, Article) in your plugin. This class will interact with the various mapping classes (e.g., ProductMapping, ArticleMapping) to retrieve, set, or modify mappings. It will also abstract the mapping logic to ensure that you don’t have to deal with the specifics of each schema type individually, adhering to the Open/Closed and Single Responsibility principles.
+
+Responsibilities of MappingManager.php:
+Retrieve Mappings: Fetch the schema mappings (default or user-modified) for a specific schema type.
+Save/Update Mappings: Allow users to save or update schema mappings through the plugin UI.
+Determine Default vs. Custom Mappings: Handle the logic for falling back to default mappings when no custom mappings are available.
+Abstract Away Complexity: Ensure that higher-level services don’t need to know the specifics of individual schema types, making it easy to add more schema types without changing the core logic.
+Folder Structure (Adding MappingManager.php):
+vbnet
+Copy code
+/src
+    /Schema
+        SchemaInterface.php
+        AbstractSchema.php
+        ProductSchema.php
+        ArticleSchema.php
+        SchemaManager.php
+    /Mapping
+        MappingInterface.php
+        AbstractMapping.php
+        ProductMapping.php
+        ArticleMapping.php
+        MappingManager.php    <--- New Class
+    /Services
+        SchemaGenerationService.php
+        MappingService.php
+MappingManager.php Class
+The MappingManager.php will act as a central point for managing all schema mappings, allowing retrieval, saving, and resetting of mappings for different schema types. It will interact with different mapping classes and handle default and custom mappings.
+
+php
+Copy code
+namespace MyPlugin\Mapping;
+
+class MappingManager
+{
+    protected $mappings = [];
+
+    /**
+     * Register a mapping class for a specific schema type.
+     *
+     * @param string $schemaType
+     * @param MappingInterface $mappingClass
+     */
+    public function registerMapping(string $schemaType, MappingInterface $mappingClass)
+    {
+        $this->mappings[$schemaType] = $mappingClass;
+    }
+
+    /**
+     * Retrieve the mapping for a specific schema type.
+     * Falls back to the default mapping if no custom mapping is set.
+     *
+     * @param string $schemaType
+     * @return array
+     */
+    public function getMapping(string $schemaType): array
+    {
+        if (!isset($this->mappings[$schemaType])) {
+            throw new \Exception("No mapping registered for schema type: " . $schemaType);
+        }
+
+        return $this->mappings[$schemaType]->getMapping($schemaType);
+    }
+
+    /**
+     * Save a new mapping for a specific schema type.
+     *
+     * @param string $schemaType
+     * @param array $mappingData
+     */
+    public function saveMapping(string $schemaType, array $mappingData): void
+    {
+        if (!isset($this->mappings[$schemaType])) {
+            throw new \Exception("No mapping registered for schema type: " . $schemaType);
+        }
+
+        $this->mappings[$schemaType]->setMapping($schemaType, $mappingData);
+    }
+
+    /**
+     * Reset the mapping for a specific schema type to the default mapping.
+     *
+     * @param string $schemaType
+     */
+    public function resetMappingToDefault(string $schemaType): void
+    {
+        if (!isset($this->mappings[$schemaType])) {
+            throw new \Exception("No mapping registered for schema type: " . $schemaType);
+        }
+
+        // Reset the mapping to its default state
+        $defaultMapping = $this->mappings[$schemaType]->getDefaultMappings();
+        $this->mappings[$schemaType]->setMapping($schemaType, $defaultMapping);
+    }
+}
+Key Responsibilities of MappingManager:
+registerMapping():
+
+This method allows the MappingManager to register mapping classes (e.g., ProductMapping, ArticleMapping).
+Each schema type (Product, Article, etc.) will have its own mapping class, and this method will associate the schema type with its corresponding mapping class.
+getMapping():
+
+Retrieves the current mapping for a specific schema type (Product, Article, etc.).
+If no custom mapping has been set by the user, this method will retrieve the default mapping from the corresponding mapping class.
+saveMapping():
+
+This method allows the user to save or update a mapping for a specific schema type.
+It takes a schema type (e.g., Product) and the custom mapping data provided by the user and updates the stored mappings in the database.
+resetMappingToDefault():
+
+Resets the mapping for a specific schema type to its default values.
+This is useful when the user wants to revert back to the plugin's default configuration.
+Example Usage of MappingManager:
+Register Mappings:
+You will register the mapping classes for each schema type (e.g., Product, Article) in the MappingManager class during plugin initialization.
+
+php
+Copy code
+use MyPlugin\Mapping\MappingManager;
+use MyPlugin\Mapping\ProductMapping;
+use MyPlugin\Mapping\ArticleMapping;
+
+$mappingManager = new MappingManager();
+
+// Register mappings for Product and Article
+$productMapping = new ProductMapping();
+$articleMapping = new ArticleMapping();
+
+$mappingManager->registerMapping('Product', $productMapping);
+$mappingManager->registerMapping('Article', $articleMapping);
+Get Mappings:
+To retrieve the current mapping for a specific schema type (e.g., Product):
+
+php
+Copy code
+// Retrieve mapping for Product schema
+$productMapping = $mappingManager->getMapping('Product');
+
+// Do something with the mapping, like generating schema
+Save Custom Mappings:
+When the user modifies a mapping, the MappingManager saves the new configuration:
+
+php
+Copy code
+$newProductMapping = [
+    'name' => ['label' => 'Product Name', 'mapping' => 'custom_product_name'],
+    'description' => ['label' => 'Product Description', 'mapping' => 'custom_product_description'],
+    // ...
+];
+
+// Save the new product mapping
+$mappingManager->saveMapping('Product', $newProductMapping);
+Reset Mapping to Default:
+If the user wants to reset a schema type's mappings to the default settings:
+
+php
+Copy code
+// Reset the Product mapping to default
+$mappingManager->resetMappingToDefault('Product');
+
+
+
+$user_schema_mapping = [
+    'Product' => [
+        'name' => [
+            'label' => 'Product Name',
+            'mapping' => 'product_name',  // User-mapped field or default value
+            'custom' => false,  // Indicates if the user customized this mapping
+        ],
+        'description' => [
+            'label' => 'Product Description',
+            'mapping' => 'product_description',
+            'custom' => true,  // Customized by the user
+        ],
+        'sku' => [
+            'label' => 'Product SKU',
+            'mapping' => 'product_sku',
+            'custom' => false,
+        ],
+        'offers' => [
+            'label' => 'Offers',
+            'multiple' => true,  // Indicates this is a multiple-instance field
+            'instances' => [
+                [
+                    'price' => [
+                        'label' => 'Offer Price',
+                        'mapping' => 'offer_price_1',
+                        'custom' => false,
+                    ],
+                    'priceCurrency' => [
+                        'label' => 'Price Currency',
+                        'mapping' => 'offer_currency_1',
+                        'custom' => false,
+                    ],
+                ],
+                [
+                    'price' => [
+                        'label' => 'Offer Price',
+                        'mapping' => 'offer_price_2',
+                        'custom' => true,
+                    ],
+                    'priceCurrency' => [
+                        'label' => 'Price Currency',
+                        'mapping' => 'offer_currency_2',
+                        'custom' => true,
+                    ],
+                ]
+            ]
+        ],
+        'review' => [
+            'label' => 'Review',
+            'multiple' => true,
+            'instances' => [
+                [
+                    'author' => [
+                        'label' => 'Review Author',
+                        'mapping' => 'review_author_1',
+                        'custom' => false,
+                    ],
+                    'reviewRating' => [
+                        'ratingValue' => [
+                            'label' => 'Review Rating Value',
+                            'mapping' => 'review_rating_value_1',
+                            'custom' => false,
+                        ],
+                        'bestRating' => [
+                            'label' => 'Best Rating',
+                            'mapping' => 'review_best_rating_1',
+                            'custom' => false,
+                        ],
+                    ],
+                    'description' => [
+                        'label' => 'Review Description',
+                        'mapping' => 'review_description_1',
+                        'custom' => false,
+                    ],
+                ]
+            ]
+        ]
+    ]
+];
